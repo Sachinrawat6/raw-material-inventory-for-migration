@@ -510,7 +510,7 @@ const StyleNumber = () => {
                                   {/* <span>{fab.average_xxs_m}</span> */}
                                   <span>
                                     {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]?.average_xxs_xs ||
+                                    {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.average_xxs_xs ||
                                       'NA'}{' '}
                                   </span>
                                   {console.log('current style details', curStyle)}
@@ -520,7 +520,7 @@ const StyleNumber = () => {
 
                                   <span>
                                     {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]?.average_s_m ||
+                                    {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.average_s_m ||
                                       'NA'}{' '}
                                   </span>
                                 </div>
@@ -529,7 +529,7 @@ const StyleNumber = () => {
 
                                   <span>
                                     {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]?.average_l_xl ||
+                                    {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.average_l_xl ||
                                       'NA'}{' '}
                                   </span>
                                 </div>
@@ -538,8 +538,8 @@ const StyleNumber = () => {
 
                                   <span>
                                     {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]
-                                      ?.average_2xl_3xl || 'NA'}{' '}
+                                    {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.average_2xl_3xl ||
+                                      'NA'}{' '}
                                   </span>
                                 </div>
                                 <div>
@@ -547,17 +547,14 @@ const StyleNumber = () => {
 
                                   <span>
                                     {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]
-                                      ?.average_4xl_5xl || 'NA'}{' '}
+                                    {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.average_4xl_5xl ||
+                                      'NA'}{' '}
                                   </span>
                                 </div>
                                 <div>
                                   <span className="font-medium text-gray-700">(WIDTH): </span>
                                   {/* <span>{fab.average_l_5xl}</span> */}
-                                  <span>
-                                    {' '}
-                                    {curStyle.fabricAvgDetails[idx]?.fabrics[idx]?.width}{' '}
-                                  </span>
+                                  <span> {curStyle.fabricAvgDetails[0]?.fabrics[idx]?.width} </span>
                                 </div>
                               </div>
                             </div>
