@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGlobalContext } from './context/StockContextProvider';
-import Papa from "papaparse"
+import Papa from 'papaparse';
+import { fetchColorsFromGoogleSheet } from '../service/GoogleSheet.services';
 
 const LowStock = () => {
   const { stockLoading, stock } = useGlobalContext();
   const [exporting, setExporting] = useState(false);
+
+  useEffect(() => {
+    fetchColorsFromGoogleSheet();
+  }, []);
 
   if (stockLoading) {
     return (
@@ -24,36 +29,38 @@ const LowStock = () => {
 
     try {
       // Enhanced CSV data with more details
-      const csvData = lowStockItems.map(item => ({
-        "Fabric Number": item.fabricNumber,
-        "Fabric Name": item.fabricName || "N/A",
-        "Available Stock": item.availableStock,
-        "Stock Status": item.availableStock > 100 ? "Medium" : "Critical",
-        "Location": item.location || "Main Warehouse",
-        "Last Updated": new Date().toLocaleDateString(),
-        "Style Numbers": item.styleNumbers ? item.styleNumbers.join(", ") : "No styles assigned",
-        "Total Styles": item.styleNumbers ? item.styleNumbers.length : 0,
-        "Urgency Level": item.availableStock > 100 ? "Medium Priority" : "High Priority"
+      const csvData = lowStockItems.map((item) => ({
+        'Fabric Number': item.fabricNumber,
+        'Fabric Name': item.fabricName || 'N/A',
+        'Available Stock': item.availableStock,
+        'Stock Status': item.availableStock > 100 ? 'Medium' : 'Critical',
+        Location: item.location || 'Main Warehouse',
+        'Last Updated': new Date().toLocaleDateString(),
+        'Style Numbers': item.styleNumbers ? item.styleNumbers.join(', ') : 'No styles assigned',
+        'Total Styles': item.styleNumbers ? item.styleNumbers.length : 0,
+        'Urgency Level': item.availableStock > 100 ? 'Medium Priority' : 'High Priority',
       }));
 
       const csv = Papa.unparse(csvData, {
         quotes: true,
-        delimiter: ",",
-        header: true
+        delimiter: ',',
+        header: true,
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
+      const link = document.createElement('a');
       link.href = url;
-      link.setAttribute("download", `low_stock_report_${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute(
+        'download',
+        `low_stock_report_${new Date().toISOString().split('T')[0]}.csv`
+      );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
       // Show success feedback
       setTimeout(() => setExporting(false), 1000);
-
     } catch (error) {
       console.error('Export failed:', error);
       setExporting(false);
@@ -61,15 +68,17 @@ const LowStock = () => {
   };
 
   const getStockStatus = (stock) => {
-    if (stock > 100) return { label: "Medium", color: "bg-yellow-100 text-yellow-800", badge: "bg-yellow-500" };
-    if (stock > 50) return { label: "Low", color: "bg-orange-100 text-orange-800", badge: "bg-orange-500" };
-    return { label: "Critical", color: "bg-red-100 text-red-800", badge: "bg-red-500" };
+    if (stock > 100)
+      return { label: 'Medium', color: 'bg-yellow-100 text-yellow-800', badge: 'bg-yellow-500' };
+    if (stock > 50)
+      return { label: 'Low', color: 'bg-orange-100 text-orange-800', badge: 'bg-orange-500' };
+    return { label: 'Critical', color: 'bg-red-100 text-red-800', badge: 'bg-red-500' };
   };
 
   const getPriorityIcon = (stock) => {
-    if (stock > 100) return "🟡";
-    if (stock > 50) return "🟠";
-    return "🔴";
+    if (stock > 100) return '🟡';
+    if (stock > 50) return '🟠';
+    return '🔴';
   };
 
   return (
@@ -92,8 +101,18 @@ const LowStock = () => {
                 <p className="text-3xl font-bold text-gray-900">{stock.length}</p>
               </div>
               <div className="p-3 bg-blue-100 rounded-full">
-                <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                <svg
+                  className="w-6 h-6 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                  />
                 </svg>
               </div>
             </div>
@@ -106,8 +125,18 @@ const LowStock = () => {
                 <p className="text-3xl font-bold text-red-600">{lowStockItems.length}</p>
               </div>
               <div className="p-3 bg-red-100 rounded-full">
-                <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                <svg
+                  className="w-6 h-6 text-red-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
                 </svg>
               </div>
             </div>
@@ -118,12 +147,22 @@ const LowStock = () => {
               <div>
                 <p className="text-sm font-medium text-gray-600">Critical Items</p>
                 <p className="text-3xl font-bold text-yellow-600">
-                  {lowStockItems.filter(item => item.availableStock <= 50).length}
+                  {lowStockItems.filter((item) => item.availableStock <= 50).length}
                 </p>
               </div>
               <div className="p-3 bg-yellow-100 rounded-full">
-                <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-6 h-6 text-yellow-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
               </div>
             </div>
@@ -133,11 +172,23 @@ const LowStock = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">In Stock Items</p>
-                <p className="text-3xl font-bold text-green-600">{stock.length - lowStockItems.length}</p>
+                <p className="text-3xl font-bold text-green-600">
+                  {stock.length - lowStockItems.length}
+                </p>
               </div>
               <div className="p-3 bg-green-100 rounded-full">
-                <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                <svg
+                  className="w-6 h-6 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
                 </svg>
               </div>
             </div>
@@ -173,8 +224,18 @@ const LowStock = () => {
                       </>
                     ) : (
                       <>
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        <svg
+                          className="w-5 h-5 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          />
                         </svg>
                         Export CSV Report
                       </>
@@ -197,19 +258,34 @@ const LowStock = () => {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                    >
                       Priority
                     </th>
-                    <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                    >
                       Fabric Details
                     </th>
-                    <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                    >
                       Stock Level
                     </th>
-                    <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                    >
                       Location
                     </th>
-                    <th scope="col" className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-8 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                    >
                       Associated Styles
                     </th>
                   </tr>
@@ -218,11 +294,18 @@ const LowStock = () => {
                   {lowStockItems.map((item, i) => {
                     const status = getStockStatus(item.availableStock);
                     return (
-                      <tr key={`${item.fabricNumber}-${i}`} className="hover:bg-blue-50 transition-all duration-200 group">
+                      <tr
+                        key={`${item.fabricNumber}-${i}`}
+                        className="hover:bg-blue-50 transition-all duration-200 group"
+                      >
                         <td className="px-8 py-5 whitespace-nowrap">
                           <div className="flex items-center">
-                            <span className="text-2xl mr-3">{getPriorityIcon(item.availableStock)}</span>
-                            <span className={`px-3 py-1 rounded-full text-xs font-bold ${status.color}`}>
+                            <span className="text-2xl mr-3">
+                              {getPriorityIcon(item.availableStock)}
+                            </span>
+                            <span
+                              className={`px-3 py-1 rounded-full text-xs font-bold ${status.color}`}
+                            >
                               {status.label}
                             </span>
                           </div>
@@ -232,7 +315,9 @@ const LowStock = () => {
                             <div className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
                               #{item.fabricNumber}
                             </div>
-                            <div className="text-sm text-gray-500">{item.fabricName || "No name provided"}</div>
+                            <div className="text-sm text-gray-500">
+                              {item.fabricName || 'No name provided'}
+                            </div>
                           </div>
                         </td>
                         <td className="px-8 py-5 whitespace-nowrap">
@@ -240,21 +325,28 @@ const LowStock = () => {
                             <div className="w-24 bg-gray-200 rounded-full h-2.5 mr-3">
                               <div
                                 className={`h-2.5 rounded-full ${status.badge}`}
-                                style={{ width: `${Math.min((item.availableStock / 200) * 100, 100)}%` }}
+                                style={{
+                                  width: `${Math.min((item.availableStock / 200) * 100, 100)}%`,
+                                }}
                               ></div>
                             </div>
-                            <span className="text-lg font-bold text-gray-900">{item.availableStock}</span>
+                            <span className="text-lg font-bold text-gray-900">
+                              {item.availableStock}
+                            </span>
                             <span className="text-sm text-gray-500 ml-1">/200</span>
                           </div>
                         </td>
                         <td className="px-8 py-5 whitespace-nowrap text-sm text-gray-900">
-                          {item.location || "Main Warehouse"}
+                          {item.location || 'Main Warehouse'}
                         </td>
                         <td className="px-8 py-5">
                           <div className="flex flex-wrap gap-1 max-w-xs">
                             {item.styleNumbers && item.styleNumbers.length > 0 ? (
                               item.styleNumbers.slice(0, 3).map((style, idx) => (
-                                <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                                <span
+                                  key={idx}
+                                  className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+                                >
                                   {style}
                                 </span>
                               ))
@@ -277,11 +369,23 @@ const LowStock = () => {
               <div className="text-center py-16 bg-gradient-to-br from-green-50 to-blue-50">
                 <div className="max-w-md mx-auto">
                   <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg className="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    <svg
+                      className="w-12 h-12 text-green-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                      />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Excellent Stock Levels! 🎉</h3>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                    Excellent Stock Levels! 🎉
+                  </h3>
                   <p className="text-gray-600 mb-6">
                     All fabrics are well-stocked above the threshold. Great inventory management!
                   </p>
@@ -298,10 +402,11 @@ const LowStock = () => {
             <div className="px-8 py-4 bg-gray-50 border-t border-gray-200">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm text-gray-600">
                 <span>
-                  Showing <span className="font-semibold">{lowStockItems.length}</span> low stock items
-                  {lowStockItems.filter(item => item.availableStock <= 50).length > 0 && (
+                  Showing <span className="font-semibold">{lowStockItems.length}</span> low stock
+                  items
+                  {lowStockItems.filter((item) => item.availableStock <= 50).length > 0 && (
                     <span className="ml-2 text-red-600 font-semibold">
-                      ({lowStockItems.filter(item => item.availableStock <= 50).length} critical)
+                      ({lowStockItems.filter((item) => item.availableStock <= 50).length} critical)
                     </span>
                   )}
                 </span>

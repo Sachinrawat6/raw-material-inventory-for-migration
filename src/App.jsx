@@ -30,6 +30,11 @@ import AccessoryList from './pages/AccessoryStock';
 import AccessoryUpdate from './pages/AccessoryUpdate';
 import DashboardInstructions from './pages/Docs';
 import ProductionReport from './pages/ProductionReport';
+import Test from './pages/test';
+import LowStockInventory from './components/LowStockInventory';
+import StockKeepingWithStyleNumber from './pages/StockKeepingWithStyleNumber';
+import AddStockWithStyleNumber from './pages/AddStockWithStyleNumber';
+import UploadAndGenerateInventory from './pages/UploadAndGenerateInventory';
 
 const AppContent = () => {
   const { user, setUser } = useGlobalContext();
@@ -125,6 +130,22 @@ const AppContent = () => {
             }
           />
           <Route
+            path="/generate-inventory"
+            element={
+              <ProtectedRoute user={user}>
+                <UploadAndGenerateInventory />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/stock-keeping-with-style-number"
+            element={
+              <ProtectedRoute user={user}>
+                <StockKeepingWithStyleNumber />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/add-ship"
             element={
               <ProtectedRoute user={user}>
@@ -132,6 +153,15 @@ const AppContent = () => {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/add-stock-with-style-number"
+            element={
+              <ProtectedRoute user={user}>
+                <AddStockWithStyleNumber />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/ship-stock"
             element={
@@ -169,6 +199,14 @@ const AppContent = () => {
             element={
               <ProtectedRoute user={user}>
                 <LowStock />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/low-stock-inventory"
+            element={
+              <ProtectedRoute user={user}>
+                <LowStockInventory />
               </ProtectedRoute>
             }
           />
@@ -276,6 +314,7 @@ const AppContent = () => {
 
           {/* Documentation Route - Public access */}
           <Route path="/docs" element={<DashboardInstructions />} />
+          <Route path="/test" element={<Test />} />
 
           <Route path="*" element={user ? <Stock /> : <Login setUser={setUser} />} />
         </Routes>

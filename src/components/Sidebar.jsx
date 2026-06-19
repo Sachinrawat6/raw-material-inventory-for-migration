@@ -87,7 +87,19 @@ const Sidebar = ({ isAuthenticated, user, setUser }) => {
       category: 'Management',
     },
     { name: 'Fabric Relations', icon: <FaLink />, path: '/meter-and-kg', category: 'Relations' },
-    { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    // { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    {
+      name: 'Low Stock Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/low-stock-inventory',
+      category: 'Monitoring',
+    },
+    {
+      name: 'Live/Zero Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/generate-inventory',
+      category: 'Monitoring',
+    },
     // { name: 'Documentation', icon: <FaBook />, path: 'https://github.com/sachin-dev-at-qurvii/docs/blob/main/doc.md', category: 'Resources', external: true },
     {
       name: 'Documentation',
@@ -102,12 +114,12 @@ const Sidebar = ({ isAuthenticated, user, setUser }) => {
     { name: 'Store1', icon: <FaWarehouse />, path: '/', category: 'Dashboard' },
     { name: 'Store2', icon: <FaWarehouse />, path: '/stock2', category: 'Dashboard' },
     { name: 'Accessory Stock', icon: <FaTags />, path: '/accessory-stock', category: 'Dashboard' },
-    {
-      name: 'Latest Purchase',
-      icon: <FaHistory />,
-      path: '/latest-purchase',
-      category: 'Dashboard',
-    },
+    // {
+    //   name: 'Latest Purchase',
+    //   icon: <FaHistory />,
+    //   path: '/latest-purchase',
+    //   category: 'Dashboard',
+    // },
     {
       name: 'Fabric Averages',
       icon: <FaCalculator />,
@@ -163,7 +175,20 @@ const Sidebar = ({ isAuthenticated, user, setUser }) => {
       path: '/accessory-upload',
       category: 'Bulk Operations',
     },
-    { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    // { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    {
+      name: 'Low Stock Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/low-stock-inventory',
+      category: 'Monitoring',
+    },
+    {
+      name: 'Live/Zero Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/generate-inventory',
+      category: 'Monitoring',
+    },
+
     {
       name: 'Production_Report',
       icon: <FaList />,
@@ -184,12 +209,12 @@ const Sidebar = ({ isAuthenticated, user, setUser }) => {
     { name: 'Store1', icon: <FaWarehouse />, path: '/', category: 'Dashboard' },
     { name: 'Store2', icon: <FaWarehouse />, path: '/stock2', category: 'Dashboard' },
     { name: 'Accessory Stock', icon: <FaTags />, path: '/accessory-stock', category: 'Dashboard' },
-    {
-      name: 'Latest Purchase',
-      icon: <FaHistory />,
-      path: '/latest-purchase',
-      category: 'Dashboard',
-    },
+    // {
+    //   name: 'Latest Purchase',
+    //   icon: <FaHistory />,
+    //   path: '/latest-purchase',
+    //   category: 'Dashboard',
+    // },
     {
       name: 'Fabric Averages',
       icon: <FaCalculator />,
@@ -245,7 +270,19 @@ const Sidebar = ({ isAuthenticated, user, setUser }) => {
       path: '/accessory-upload',
       category: 'Bulk Operations',
     },
-    { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    // { name: 'Low Stock Alert', icon: <FaBell />, path: '/low-stock', category: 'Monitoring' },
+    {
+      name: 'Low Stock Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/low-stock-inventory',
+      category: 'Monitoring',
+    },
+    {
+      name: 'Live/Zero Inventory',
+      icon: <FaExclamationTriangle />,
+      path: '/generate-inventory',
+      category: 'Monitoring',
+    },
     {
       name: 'Production_Report',
       icon: <FaList />,
